@@ -1,1 +1,0 @@
-Bootstrap payload directory. The binary source archive is attached in the same commit tree and removed automatically by the bootstrap workflow.

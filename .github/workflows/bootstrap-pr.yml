@@ -1,0 +1,84 @@
+name: Bootstrap and verify v0.7
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bootstrap-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  bootstrap-verify:
+    if: github.head_ref == 'predeploy/v0.7'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      NEXT_PUBLIC_SITE_URL: "http://localhost:3000"
+      CONTACT_MODE: "mock"
+    steps:
+      - name: Checkout predeploy branch
+        uses: actions/checkout@v4
+        with:
+          ref: predeploy/v0.7
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Expand source archive when present
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f .source/mediacre-v0.7-source.tar.gz ]; then
+            tar -tzf .source/mediacre-v0.7-source.tar.gz >/dev/null
+            tar -xzf .source/mediacre-v0.7-source.tar.gz -C .
+            rm -rf .source
+            rm -f .github/workflows/bootstrap-source.yml
+            rm -f .github/workflows/trigger-bootstrap.txt
+            rm -f SOURCE_UPLOAD_IN_PROGRESS.md
+          fi
+
+      - name: Verify source structure
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f package.json
+          test -f app/page.tsx
+          test -f app/layout.tsx
+          test -f .github/workflows/ci.yml
+          test -f DEPLOYMENT_CHECKLIST.md
+          test -f SECURITY.md
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: package.json
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Validate source
+        run: npm run validate
+
+      - name: Production build
+        run: npm run build
+
+      - name: Commit verified expanded source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Source already expanded; no commit needed."
+            exit 0
+          fi
+          git commit -m "feat: import verified MEDIA CRE production candidate v0.7"
+          git push origin HEAD:predeploy/v0.7

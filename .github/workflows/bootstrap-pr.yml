@@ -21,7 +21,7 @@ jobs:
       NEXT_TELEMETRY_DISABLED: "1"
       NEXT_PUBLIC_SITE_URL: "http://localhost:3000"
       CONTACT_MODE: "mock"
-      SOURCE_SHA256: "8eadc5787d218da7d6240bcab8f23f7023ba5f0195831e2b4fc5323c9036ece9"
+      SOURCE_SHA256: "f1d3a88c2c08abfa495a24e8a177c9ebbf7a8e73b35632815b3bc8c33ec5c032"
     steps:
       - name: Checkout predeploy branch
         uses: actions/checkout@v4
@@ -30,16 +30,15 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Restore and expand source archive
+      - name: Restore and expand verified source
         shell: bash
         run: |
           set -euo pipefail
-          part_count="$(find .source -maxdepth 1 -name 'part-*.b64' -type f | wc -l | tr -d ' ')"
-          test "$part_count" = "8"
-          cat .source/part-*.b64 | base64 --decode > /tmp/mediacre-v0.7-source.tar.gz
-          echo "$SOURCE_SHA256  /tmp/mediacre-v0.7-source.tar.gz" | sha256sum --check --strict
-          tar -tzf /tmp/mediacre-v0.7-source.tar.gz >/dev/null
-          tar -xzf /tmp/mediacre-v0.7-source.tar.gz -C .
+          test -f .source/full-source.b64
+          base64 --decode .source/full-source.b64 > /tmp/mediacre-v0.7-full-source.tar.gz
+          echo "$SOURCE_SHA256  /tmp/mediacre-v0.7-full-source.tar.gz" | sha256sum --check --strict
+          test "$(tar -tzf /tmp/mediacre-v0.7-full-source.tar.gz | grep -v '/$' | wc -l | tr -d ' ')" = "67"
+          tar -xzf /tmp/mediacre-v0.7-full-source.tar.gz -C .
           rm -rf .source
           rm -f .github/workflows/bootstrap-source.yml
           rm -f .github/workflows/trigger-bootstrap.txt
@@ -60,8 +59,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: npm
-          cache-dependency-path: package.json
 
       - name: Install dependencies
         run: npm install --no-audit --no-fund

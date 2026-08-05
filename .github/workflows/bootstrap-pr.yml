@@ -34,8 +34,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test -f .source/full-source.b64
-          base64 --decode .source/full-source.b64 > /tmp/mediacre-v0.7-full-source.tar.gz
+          test "$(find .source -maxdepth 1 -name 'direct-*.b64' -type f | wc -l | tr -d ' ')" = "4"
+          cat .source/direct-*.b64 | base64 --decode > /tmp/mediacre-v0.7-full-source.tar.gz
           echo "$SOURCE_SHA256  /tmp/mediacre-v0.7-full-source.tar.gz" | sha256sum --check --strict
           test "$(tar -tzf /tmp/mediacre-v0.7-full-source.tar.gz | grep -v '/$' | wc -l | tr -d ' ')" = "67"
           tar -xzf /tmp/mediacre-v0.7-full-source.tar.gz -C .

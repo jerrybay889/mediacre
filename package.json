@@ -1,0 +1,31 @@
+{
+  "name": "media-cre-website",
+  "version": "0.7.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "check:content": "node scripts/check-content.mjs",
+    "test:contact": "node scripts/test-contact.mjs",
+    "validate": "npm run check:content && npm run test:contact && npm run lint && npm run typecheck"
+  },
+  "dependencies": {
+    "next": "16.2.11",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.0",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "eslint": "9.38.0",
+    "eslint-config-next": "16.2.11",
+    "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=20.9 <25"
+  }
+}

@@ -25,6 +25,17 @@ jobs:
       - name: Checkout candidate
         uses: actions/checkout@v4
 
+      - name: Expand source archive when present
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f .source/mediacre-v0.7-source.tar.gz.b64 ]; then
+            base64 --decode .source/mediacre-v0.7-source.tar.gz.b64 > /tmp/mediacre-v0.7-source.tar.gz
+            echo "66a5493e468e1aabbff5f25d3476b870e05a09b5e88784abcee724aeb1317b0e  /tmp/mediacre-v0.7-source.tar.gz" | sha256sum -c -
+            tar -tzf /tmp/mediacre-v0.7-source.tar.gz >/dev/null
+            tar -xzf /tmp/mediacre-v0.7-source.tar.gz -C .
+          fi
+
       - name: Verify source structure
         shell: bash
         run: |
@@ -33,15 +44,20 @@ jobs:
           test -f app/page.tsx
           test -f app/layout.tsx
           test -f app/globals.css
+          test -f content/site-copy.json
+          test -f lib/projects.ts
+          test -f public/assets/hero-city.svg
+          test -f scripts/check-content.mjs
           test -f .github/workflows/ci.yml
           test -f DEPLOYMENT_CHECKLIST.md
           test -f SECURITY.md
-          test "$(find . -type f -not -path './.git/*' | wc -l | tr -d ' ')" -ge "67"
+          test "$(find . -type f -not -path './.git/*' | wc -l | tr -d ' ')" -ge "68"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
         run: npm install --no-audit --no-fund

@@ -8,3 +8,4 @@
 - `scripts/`: deterministic content and contact validation.
 
 The website can operate in mock contact mode without external services. Production form delivery is isolated behind a server-side webhook.
+

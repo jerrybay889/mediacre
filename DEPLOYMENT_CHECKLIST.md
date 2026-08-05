@@ -10,3 +10,4 @@
 - Verify robots, sitemap, Open Graph image, canonical metadata, accessibility, and form delivery.
 
 Vercel project connection and production deployment are intentionally excluded from this candidate.
+

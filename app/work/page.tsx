@@ -10,3 +10,4 @@ export default function WorkPage() {
     <section className="section light"><div className="container"><WorkArchive projects={projects} /></div></section>
   </main>;
 }
+

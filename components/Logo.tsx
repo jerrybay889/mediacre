@@ -10,3 +10,4 @@ export function Logo({ compact = false }: { compact?: boolean }) {
     </span>
   );
 }
+

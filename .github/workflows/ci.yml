@@ -35,3 +35,4 @@ jobs:
           curl -fsS http://127.0.0.1:3000/ >/dev/null
           curl -fsS http://127.0.0.1:3000/work >/dev/null
           curl -fsS http://127.0.0.1:3000/contact >/dev/null
+

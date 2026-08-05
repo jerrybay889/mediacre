@@ -7,3 +7,4 @@ export default function AboutPage() {
     <section className="section"><div className="container aboutGrid"><h2>Media intelligence.<br/>Creative development.<br/>Field execution.</h2><div><p>기존 소개자료에는 옥외광고 연간 플래닝, 맞춤형 매체 개발, 프로모션, 바이럴, 콘텐츠·세일즈, 중국 마케팅과 현장 운영 경험이 기록돼 있습니다.</p><p className="muted">설립연도, 조직, 대표자, 주소, 최신 서비스 범위는 공식 정보 확인 후 반영합니다.</p></div></div></section>
   </main>;
 }
+

@@ -16,3 +16,4 @@ export function ProjectCard({ project }: { project: Project }) {
     </article>
   );
 }
+

@@ -1,0 +1,2 @@
+export type AnalyticsEvent = "hero_cta_click"|"hero_work_click"|"header_cta_click"|"project_card_open"|"contact_form_start"|"contact_form_submit"|"contact_form_error"|"privacy_link_click";
+export function trackEvent(event: AnalyticsEvent, detail: Record<string, unknown> = {}) { if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("mediacre:analytics", { detail: { event, ...detail } })); }

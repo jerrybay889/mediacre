@@ -19,3 +19,4 @@ npm run build
 ```
 
 Copy `.env.example` to `.env.local`. Vercel connection is intentionally pending final account/domain review. Company facts are based on the supplied company profile; prototype visuals and unverified legal/contact fields remain explicitly marked.
+

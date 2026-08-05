@@ -8,3 +8,4 @@ export default function ContactPage() {
     <section className="section light"><div className="container contactGrid"><div><h2>목표, 지역, 일정,<br/>예산 범위만 있어도<br/>시작할 수 있습니다.</h2><p>공식 회사 연락처는 최종 확인 후 반영합니다.</p></div><ContactForm /></div></section>
   </main>;
 }
+

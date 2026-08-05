@@ -7,3 +7,4 @@ export function Footer() {
     <div><strong>Contact</strong><p>공식 이메일·주소는 최종 검증 후 반영<br /><Link data-event="privacy_link_click" href="/privacy">개인정보 처리방침</Link><br />Production candidate v0.7</p></div>
   </div></footer>;
 }
+

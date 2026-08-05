@@ -34,3 +34,4 @@ export async function POST(request: Request) {
   }
   return json({ message: "문의가 접수되었습니다." });
 }
+
